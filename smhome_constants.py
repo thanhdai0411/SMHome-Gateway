@@ -9,6 +9,10 @@ MQTT_PORT = 1883
 MQTT_USERNAME = 'sm-home'
 MQTT_PWD = '123123'
 
+PATH_SENSOR_KEY = "value"
+PATH_DEVICE_KEY = "status"
+PATH_BUTTON_KEY = "button"
+
 # device id config
 ROOT_SM_HOME = "SM_HOME"
 
@@ -19,18 +23,21 @@ SM_HOME_NODE_1 = {
         "1" : "SMH_DEVICE1",
         "2" : "SMH_DEVICE2",
         "3" : "SMH_DEVICE3",
-        "4" : "SMH_DEVICE4"
+        "4" : "SMH_DEVICE4",
+        "5" : "SMH_DEVICE5",
     },
     "sensor": {
         "1" : "SMH_SENSOR1",
         "2" : "SMH_SENSOR2",
         "3" : "SMH_SENSOR3",
-        "4" : "SMH_SENSOR4"
+        "4" : "SMH_SENSOR4",
+        "5" : "SMH_SENSOR5"
     },
   
 }
 
 SM_HOME_NODE_1_SENSOR_TOPIC = smhome_utils.build_topic_sensor(SM_HOME_NODE_1)
+SM_HOME_NODE_1_BUTTON_TOPIC = smhome_utils.build_topic_button(SM_HOME_NODE_1)
 
 
 #  Node 2
@@ -40,7 +47,8 @@ SM_HOME_NODE_2 = {
         "1" : "SMH_DEVICE1",
         "2" : "SMH_DEVICE2",
         "3" : "SMH_DEVICE3",
-        "4" : "SMH_DEVICE4"
+        "4" : "SMH_DEVICE4",
+        "5" : "SMH_DEVICE5",
     },
     "sensor": {
         "1" : "SMH_SENSOR1",
@@ -52,6 +60,8 @@ SM_HOME_NODE_2 = {
 }
 
 SM_HOME_NODE_2_SENSOR_TOPIC = smhome_utils.build_topic_sensor(SM_HOME_NODE_2)
+SM_HOME_NODE_2_BUTTON_TOPIC = smhome_utils.build_topic_button(SM_HOME_NODE_2)
+
 
 
 #  Node 3
@@ -61,7 +71,8 @@ SM_HOME_NODE_3 = {
         "1" : "SMH_DEVICE1",
         "2" : "SMH_DEVICE2",
         "3" : "SMH_DEVICE3",
-        "4" : "SMH_DEVICE4"
+        "4" : "SMH_DEVICE4",
+        "5" : "SMH_DEVICE5",
     },
     "sensor": {
         "1" : "SMH_SENSOR1",
@@ -73,7 +84,9 @@ SM_HOME_NODE_3 = {
 }
 
 SM_HOME_NODE_3_SENSOR_TOPIC = smhome_utils.build_topic_sensor(SM_HOME_NODE_3)
+SM_HOME_NODE_3_BUTTON_TOPIC = smhome_utils.build_topic_button(SM_HOME_NODE_3)
 
 
-
+# all
 SM_HOME_ALL_SENSOR_TOPIC = SM_HOME_NODE_1_SENSOR_TOPIC + SM_HOME_NODE_2_SENSOR_TOPIC + SM_HOME_NODE_3_SENSOR_TOPIC
+SM_HOME_ALL_BUTTON_TOPIC = SM_HOME_NODE_1_BUTTON_TOPIC + SM_HOME_NODE_2_BUTTON_TOPIC + SM_HOME_NODE_3_BUTTON_TOPIC

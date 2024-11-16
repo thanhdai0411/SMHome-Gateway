@@ -14,14 +14,9 @@ firebase_admin.initialize_app(cred, {
     'databaseURL': smhome_constants.DATABASE_URL
 })
 
-# firebase realtime
-ref = db.reference()
-
-# firestore
+# **********************************************************************
+# firestore 
 db_firestore = firestore.client()
-
-print(db_firestore)
-
 
 def save_sensor_firestore(sensor_id, node_id, value):
     sensor_ref = db_firestore.collection(smhome_constants.ROOT_SM_HOME).document(node_id).collection(sensor_id)
@@ -34,8 +29,8 @@ def save_sensor_firestore(sensor_id, node_id, value):
 
     print(f'[FireStore]:   Sensor data save ::: {sensor_id}')
 
-
-# connnect mqtt 
+# **********************************************************************
+# connnect mqtt  
 client = smhome_mqtt.connect_mqtt()
 client.loop_start()
 
@@ -45,34 +40,54 @@ def on_message(client, userdata, msg):
     topicSensor = msg.topic
     dataSensor = msg.payload.decode()
 
-    # set realtime
-    refSensor = db.reference(topicSensor)
-    refSensor.set(dataSensor)
+  
 
     # spilit add firestore
     sensorSplit = topicSensor.split("/")
     nodeId = sensorSplit[2]
     sensorId = sensorSplit[3]
-    save_sensor_firestore(sensorId, nodeId, dataSensor )
+    prefixSensor = sensorSplit[4]
 
+    # replace topic button to status => ref status device
+    if(prefixSensor == smhome_constants.PATH_BUTTON_KEY ) :
+        topicSensor = topicSensor.replace(prefixSensor, "status")
 
+    # set realtime 
+    refSensor = db.reference(topicSensor)
+    refSensor.set(dataSensor)
+
+    # save firestore data sensor
+    if prefixSensor ==  smhome_constants.PATH_SENSOR_KEY :
+        save_sensor_firestore(sensorId, nodeId, dataSensor)
+
+    
     # log
     print(f"[SUB]:   Received `{dataSensor}` from `{topicSensor}` topic")
 
 
+# subscrice topic  
+# sensor
 for topicSensor in smhome_constants.SM_HOME_ALL_SENSOR_TOPIC : 
     smhome_mqtt.subscribe(client, topicSensor, on_message)
 
+# device
+for topicDevice in smhome_constants.SM_HOME_ALL_BUTTON_TOPIC : 
+    smhome_mqtt.subscribe(client, topicDevice, on_message)
 
-# listen firebase realtim
+
+# **********************************************************************
+# listen firebase realtim 
+
+ref = db.reference()
+
 def on_message_firebase(event):
     path_all = "/"
-    path_sensor_key = "value"
+    path_device_key = smhome_constants.PATH_DEVICE_KEY
     path_sensor = event.path.split("/")[-1] # value
 
     
 
-    if event.path != path_all and  path_sensor != path_sensor_key:
+    if event.path != path_all and  path_sensor == path_device_key:
         print("---------------------------------------------------------------")
         print('[{}] :: {}'.format(event.path, event.data))
 
