@@ -1,0 +1,327 @@
+{
+    "SM_HOME": {
+        "SMH_NODE1": {
+            "SMH_DEVICE1": {
+                "config": {
+                    "active": true,
+                    "icon": "material-symbols:tv-outline",
+                    "name": "\u0110\u00e8n 1 ",
+                    "styleOFF": "",
+                    "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                },
+                "status": 1
+            },
+            "SMH_DEVICE2": {
+                "config": {
+                    "active": true,
+                    "icon": "mdi:lamp-outline",
+                    "name": "\u0110\u00e8n 2",
+                    "styleOFF": "",
+                    "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                },
+                "status": 1
+            },
+            "SMH_DEVICE3": {
+                "config": {
+                    "active": true,
+                    "icon": "icon",
+                    "name": "\u0110\u00e8n 3",
+                    "styleOFF": "",
+                    "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                },
+                "status": 1
+            },
+            "SMH_DEVICE4": {
+                "config": {
+                    "active": true,
+                    "icon": "icon",
+                    "name": "\u0110\u00e8n 4",
+                    "styleOFF": "",
+                    "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                },
+                "status": 1
+            },
+            "SMH_DEVICE5": {
+                "config": {
+                    "active": true,
+                    "icon": "icon",
+                    "name": "\u0110\u00e8n 5",
+                    "styleOFF": "",
+                    "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                },
+                "status": 1
+            },
+            "SMH_SENSOR1": {
+                "config": {
+                    "active": true,
+                    "icon": "icon",
+                    "isAlert": false,
+                    "maxThreshold": "40",
+                    "minThreshold": "25",
+                    "name": "Nhi\u1ec7t \u0111\u1ed9",
+                    "style": "bg-gradient-to-r from-yellow-500",
+                    "unit": "\u00b0C"
+                },
+                "value": "31.35"
+            },
+            "SMH_SENSOR2": {
+                "config": {
+                    "active": true,
+                    "icon": "carbon:humidity",
+                    "isAlert": false,
+                    "maxThreshold": "50",
+                    "minThreshold": "30",
+                    "name": "\u0110\u00f4 \u1ea9m",
+                    "style": "bg-gradient-to-r from-yellow-500",
+                    "unit": "%"
+                },
+                "value": "73.14"
+            },
+            "SMH_SENSOR3": {
+                "config": {
+                    "active": true,
+                    "icon": "mdi:run-fast",
+                    "isAlert": true,
+                    "maxThreshold": "",
+                    "minThreshold": "",
+                    "name": "Chuy\u1ec3n \u0111\u1ed9ng",
+                    "style": "bg-gradient-to-r from-yellow-500",
+                    "unit": ""
+                },
+                "value": "0"
+            },
+            "SMH_SENSOR4": {
+                "config": {
+                    "active": true,
+                    "icon": "mdi:gas",
+                    "isAlert": true,
+                    "maxThreshold": "",
+                    "minThreshold": "",
+                    "name": "Kh\u00ed Gas, Kh\u00f3i",
+                    "style": "bg-gradient-to-r from-yellow-500",
+                    "unit": ""
+                },
+                "value": "0"
+            },
+            "config": {
+                "active": true,
+                "deviceItem": [
+                    {
+                        "active": true,
+                        "deviceId": "SMH_DEVICE1",
+                        "icon": "material-symbols:tv-outline",
+                        "name": "\u0110\u00e8n 1 ",
+                        "styleOFF": "",
+                        "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                    },
+                    {
+                        "active": true,
+                        "deviceId": "SMH_DEVICE2",
+                        "icon": "mdi:lamp-outline",
+                        "name": "\u0110\u00e8n 2",
+                        "styleOFF": "",
+                        "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                    },
+                    {
+                        "active": true,
+                        "deviceId": "SMH_DEVICE3",
+                        "icon": "",
+                        "name": "\u0110\u00e8n 3",
+                        "styleOFF": "",
+                        "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                    },
+                    {
+                        "active": true,
+                        "deviceId": "SMH_DEVICE4",
+                        "icon": "",
+                        "name": "\u0110\u00e8n 4",
+                        "styleOFF": "",
+                        "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                    },
+                    {
+                        "active": true,
+                        "deviceId": "SMH_DEVICE5",
+                        "icon": "",
+                        "name": "\u0110\u00e8n 5",
+                        "styleOFF": "",
+                        "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                    }
+                ],
+                "icon": "",
+                "name": "Ph\u00f2ng kh\u00e1ch",
+                "nodeId": "SMH_NODE1",
+                "sensorItem": [
+                    {
+                        "active": true,
+                        "icon": "carbon:humidity",
+                        "isAlert": false,
+                        "maxThreshold": "50",
+                        "minThreshold": "30",
+                        "name": "\u0110\u00f4 \u1ea9m",
+                        "sensorId": "SMH_SENSOR2",
+                        "style": "bg-gradient-to-r from-yellow-500",
+                        "unit": "%"
+                    },
+                    {
+                        "active": true,
+                        "icon": "",
+                        "isAlert": false,
+                        "maxThreshold": "40",
+                        "minThreshold": "25",
+                        "name": "Nhi\u1ec7t \u0111\u1ed9",
+                        "sensorId": "SMH_SENSOR1",
+                        "style": "bg-gradient-to-r from-yellow-500",
+                        "unit": "\u00b0C"
+                    },
+                    {
+                        "active": true,
+                        "icon": "mdi:gas",
+                        "isAlert": true,
+                        "maxThreshold": "",
+                        "minThreshold": "",
+                        "name": "Kh\u00ed Gas, Kh\u00f3i",
+                        "sensorId": "SMH_SENSOR4",
+                        "style": "bg-gradient-to-r from-yellow-500",
+                        "unit": ""
+                    },
+                    {
+                        "active": true,
+                        "icon": "mdi:run-fast",
+                        "isAlert": true,
+                        "maxThreshold": "",
+                        "minThreshold": "",
+                        "name": "Chuy\u1ec3n \u0111\u1ed9ng",
+                        "sensorId": "SMH_SENSOR3",
+                        "style": "bg-gradient-to-r from-yellow-500",
+                        "unit": ""
+                    }
+                ]
+            }
+        },
+        "SMH_NODE2": {
+            "SMH_DEVICE1": {
+                "config": {
+                    "active": true,
+                    "icon": "icon",
+                    "name": "\u0110\u00e8n 1",
+                    "styleOFF": "",
+                    "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                },
+                "status": 1
+            },
+            "SM_SENSOR1": {
+                "config": {
+                    "active": true,
+                    "icon": "icon",
+                    "maxThreshold": "",
+                    "minThreshold": "",
+                    "name": "Nhi\u1ec7t \u0111\u1ed9",
+                    "style": "bg-gradient-to-r from-yellow-500",
+                    "unit": ""
+                }
+            },
+            "config": {
+                "active": true,
+                "deviceItem": [
+                    {
+                        "active": true,
+                        "deviceId": "SMH_DEVICE1",
+                        "icon": "",
+                        "name": "\u0110\u00e8n 1",
+                        "styleOFF": "",
+                        "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                    }
+                ],
+                "name": "Ph\u00f2ng ng\u1ee7",
+                "nodeId": "SMH_NODE2",
+                "sensorItem": [
+                    {
+                        "active": true,
+                        "icon": "",
+                        "maxThreshold": "",
+                        "minThreshold": "",
+                        "name": "Nhi\u1ec7t \u0111\u1ed9",
+                        "sensorId": "SM_SENSOR1",
+                        "style": "bg-gradient-to-r from-yellow-500",
+                        "unit": ""
+                    }
+                ]
+            }
+        },
+        "SMH_NODE3": {
+            "SMH_DEVICE1": {
+                "config": {
+                    "active": true,
+                    "icon": "icon",
+                    "name": "\u0110\u00e8n 1",
+                    "styleOFF": "",
+                    "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                },
+                "status": 1
+            },
+            "SMH_SENSOR1": {
+                "config": {
+                    "active": true,
+                    "icon": "icon",
+                    "isAlert": false,
+                    "maxThreshold": "",
+                    "minThreshold": "",
+                    "name": "Nhi\u1ec7t \u0111\u1ed9",
+                    "style": "bg-gradient-to-r from-yellow-500",
+                    "unit": ""
+                }
+            },
+            "SMH_SENSOR2": {
+                "config": {
+                    "active": true,
+                    "icon": "icon",
+                    "isAlert": false,
+                    "maxThreshold": "",
+                    "minThreshold": "",
+                    "name": "\u0110\u1ed9 \u1ea9m",
+                    "style": "bg-gradient-to-r from-yellow-500",
+                    "unit": "%"
+                }
+            },
+            "config": {
+                "active": true,
+                "deviceItem": [
+                    {
+                        "active": true,
+                        "deviceId": "SMH_DEVICE1",
+                        "icon": "",
+                        "name": "\u0110\u00e8n 1",
+                        "styleOFF": "",
+                        "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                    }
+                ],
+                "name": "Nh\u00e0 b\u1ebfp",
+                "nodeId": "SMH_NODE3",
+                "sensorItem": [
+                    {
+                        "active": true,
+                        "icon": "",
+                        "isAlert": false,
+                        "maxThreshold": "",
+                        "minThreshold": "",
+                        "name": "Nhi\u1ec7t \u0111\u1ed9",
+                        "sensorId": "SMH_SENSOR1",
+                        "style": "bg-gradient-to-r from-yellow-500",
+                        "unit": ""
+                    },
+                    {
+                        "active": true,
+                        "icon": "",
+                        "isAlert": false,
+                        "maxThreshold": "",
+                        "minThreshold": "",
+                        "name": "\u0110\u1ed9 \u1ea9m",
+                        "sensorId": "SMH_SENSOR2",
+                        "style": "bg-gradient-to-r from-yellow-500",
+                        "unit": "%"
+                    }
+                ]
+            }
+        }
+    }
+}

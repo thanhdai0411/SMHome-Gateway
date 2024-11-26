@@ -11,10 +11,25 @@ MQTT_PWD = '123123'
 
 PATH_SENSOR_KEY = "value"
 PATH_DEVICE_KEY = "status"
+PATH_CONFIG_KEY = "config"
 PATH_BUTTON_KEY = "button"
+
+
+NOTIFICATION_STATE_FILE = "notification-state.json"
+NOTIFICATION_NEXT_MINUTE_TIME = 2
+NODE_CONFIG_FILE = "config-node.json"
 
 # device id config
 ROOT_SM_HOME = "SM_HOME"
+ROOT_SM_HOME_NOTIFICATION = "SM_HOME_NOTIFICATION"
+
+
+TEMP_SENSOR_ID = "SMH_SENSOR1"
+HUMI_SENSOR_ID = "SMH_SENSOR2"
+SR_SENSOR_ID = "SMH_SENSOR3"
+GAS_SENSOR_ID = "SMH_SENSOR4"
+
+
 
 #  Node 1
 SM_HOME_NODE_1 = {
@@ -90,3 +105,27 @@ SM_HOME_NODE_3_BUTTON_TOPIC = smhome_utils.build_topic_button(SM_HOME_NODE_3)
 # all
 SM_HOME_ALL_SENSOR_TOPIC = SM_HOME_NODE_1_SENSOR_TOPIC + SM_HOME_NODE_2_SENSOR_TOPIC + SM_HOME_NODE_3_SENSOR_TOPIC
 SM_HOME_ALL_BUTTON_TOPIC = SM_HOME_NODE_1_BUTTON_TOPIC + SM_HOME_NODE_2_BUTTON_TOPIC + SM_HOME_NODE_3_BUTTON_TOPIC
+
+
+
+
+#  title send noitfy
+SM_HOME_NODE_2 = {
+    "min" : {
+        "body": ""
+    },
+    "device": {
+        "1" : "SMH_DEVICE1",
+        "2" : "SMH_DEVICE2",
+        "3" : "SMH_DEVICE3",
+        "4" : "SMH_DEVICE4",
+        "5" : "SMH_DEVICE5",
+    },
+    "sensor": {
+        "1" : "SMH_SENSOR1",
+        "2" : "SMH_SENSOR2",
+        "3" : "SMH_SENSOR3",
+        "4" : "SMH_SENSOR4"
+    },
+  
+}
