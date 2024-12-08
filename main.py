@@ -2,11 +2,20 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 from firebase_admin import firestore
+from firebase_admin import messaging
+import time
+from datetime import datetime
+
 from google.cloud.firestore_v1 import SERVER_TIMESTAMP
 
+from smhome_mongo import AtlasClient,ATLAS_URI,DB_NAME,COLLECTION_NAME
 import smhome_mqtt
 import smhome_constants
 import smhome_utils
+
+# connect mongodb atlas
+atlas_client = AtlasClient(ATLAS_URI, DB_NAME,COLLECTION_NAME)
+atlas_client.ping()
 
 
 cred = credentials.Certificate("sm-home-firebase-sdk.json")
@@ -17,138 +26,31 @@ firebase_admin.initialize_app(cred, {
 
 
 # Khởi tạo trạng thái gửi thông báo
-last_send_times = smhome_utils.load_notification_state()
+last_send_times = smhome_utils.load_notification_state() or {}
 
 # **********************************************************************
 # firestore 
 db_firestore = firestore.client()
 
-def save_sensor_firestore(sensor_id, node_id, value):
-    sensor_ref = db_firestore.collection(smhome_constants.ROOT_SM_HOME).document(node_id).collection(sensor_id)
-    sensor_ref.add({
-        "sensorId" : sensor_id,
-        "nodeId" : node_id,
+def save_sensor_db(sensor_id, node_id, value):
+    # sensor_ref = db_firestore.collection(smhome_constants.ROOT_SM_HOME).document(node_id).collection(sensor_id)
+    # sensor_ref.add({
+    #     "sensorId" : sensor_id,
+    #     "nodeId" : node_id,
+    #     'value': value,
+    #     'timestamp': SERVER_TIMESTAMP  # Tự động ghi lại thời gian hiện tại
+    # })
+
+
+    dataInsert = {
+        "sensor_id" : sensor_id,
+        "node_id" : node_id,
         'value': value,
-        'timestamp': SERVER_TIMESTAMP  # Tự động ghi lại thời gian hiện tại
-    })
+        'time': datetime.now()  # Tự động ghi lại thời gian hiện tại
+    }
 
-    print(f'[FireStore]:   Sensor data save ::: {sensor_id}')
+    atlas_client.insert_one(dataInsert)
 
-# **********************************************************************
-# sent notification 
-def get_all_tokens():
-    try:
-        tokens_ref = db_firestore.collection_group(smhome_constants.ROOT_SM_HOME_NOTIFICATION)
-        tokens = tokens_ref.stream()
-
-        tokenUsers = []
-        for token in tokens:
-            token_data = token.to_dict()
-            token_id = token.id
-            tokenUsers.append({
-                "token" : token_data['token'] , 
-                "id" : token.id
-            })
-
-        seen_tokens = set()  # Tập hợp để theo dõi các token đã gặp
-        unique_list = []     # Danh sách kết quả
-
-        for item in tokenUsers:
-            if item["token"] not in seen_tokens:
-                seen_tokens.add(item["token"])
-                unique_list.append(item)
-
-        return unique_list
-    except Exception as e:
-        print(f"Lỗi khi lấy dữ liệu: {e}")
-        return []
-
-
-def send_message_to_tokens(title, body):
-    tokens = get_all_tokens()
-    for objectToken in tokens:
-        attempts = 0  # Đếm số lần thử gửi
-        success = False
-        
-        token = objectToken["token"] 
-        idToken = objectToken["id"]
-
-        while attempts < 3 and not success:
-            try:
-                # Cấu hình nội dung thông báo
-                message = messaging.Message(
-                    notification=messaging.Notification(
-                        title=title,
-                        body=body,
-                    ),
-                    token=token,  # Gửi từng token
-                )
-
-                # Gửi thông báo
-                response = messaging.send(message)
-                print(f"Thông báo gửi thành công đến token: {token}")
-                print(f"Response: {response}")
-                
-                success = True  # Gửi thành công, thoát khỏi vòng lặp
-                
-            except Exception as e:
-                attempts += 1
-                print(f"Lỗi khi gửi thông báo tới token {token}, lần thử {attempts}: {e}")
-                if attempts < 3:
-                    time.sleep(5)  # Retry sau 5 giây
-
-        if not success:
-
-            # delete document
-            doc_ref = db.collection(smhome_constants.ROOT_SM_HOME_NOTIFICATION).document(idToken)
-            doc_ref.delete()
-
-            print(f"Delete token {token} sau 3 lần thử không thành công.")
-
-    print("Hoàn thành việc gửi thông báo.")
-
-
-def action_send_notify(cofigThres, dataSensor, sensorId) :
-    minT = cofigThres["minThreshold"]
-    maxT = cofigThres["maxThreshold"]
-    nameSensor = cofigThres["name"]
-
-    conditionSentMinThresh = minT and (int(dataSensor) < int(minT))
-    conditionSentMaxThresh = maxT and (int(dataSensor) > int(maxT))
-
-
-    conditionDetect = int(dataSensor) == 1
-
-
-    titleMsg = "Cảnh báo vượt ngưỡng"
-    minBody = nameSensor + " có giá trị " + dataSensor + " vượt ngưỡng Min"
-    maxBody = nameSensor + " có giá trị " + dataSensor + " vượt ngưỡng Max"
-
-    titleSR = "Cảnh báo"
-    bodySR = "Có người đột nhập"
-
-    titleGAS = "Cảnh báo"
-    bodyGAS = "Phát hiện rò rỉ khí gas hoặc có khói"
-
-
-    # temp and humi
-    if sensorId in [smhome_constants.TEMP_SENSOR_ID, smhome_constants.HUMI_SENSOR_ID] : 
-        if conditionSentMinThresh and smhome_utils.can_send_notification(sensorId, last_send_times) :
-            send_message_to_tokens(titleMsg, minBody)
-        
-        if conditionSentMaxThresh and smhome_utils.can_send_notification(sensorId, last_send_times):
-            send_message_to_tokens(titleMsg, maxBody)
-
-    # sr : chuyen dong
-    elif  smhome_constants.SR_SENSOR_ID  : 
-        if conditionDetect and smhome_utils.can_send_notification(sensorId, last_send_times) :
-            send_message_to_tokens(titleSR, bodySR)
-
-    # gas   
-    elif  smhome_constants.GAS_SENSOR_ID  : 
-        if conditionDetect and smhome_utils.can_send_notification(sensorId, last_send_times) :
-            send_message_to_tokens(titleGAS, bodyGAS)
-       
 
 # **********************************************************************
 # connnect mqtt  
@@ -156,43 +58,58 @@ client = smhome_mqtt.connect_mqtt()
 client.loop_start()
 
 
-def on_message(client, userdata, msg):
-                                                                                                                                                                                                                                  
-    topicSensor = msg.topic
-
-    # split frame send
-    dataSensor = msg.payload.decode()
-
-    # spilit add firestore
-    sensorSplit = topicSensor.split("/")
-    nodeId = sensorSplit[2]
-    sensorId = sensorSplit[3]
-    prefixSensor = sensorSplit[4]
-
-    # replace topic button to status => ref status device
-    if(prefixSensor == smhome_constants.PATH_BUTTON_KEY ) :
-        topicSensor = topicSensor.replace(prefixSensor, "status")
-
-    # set realtime 
+def set_realtime_db(topicSensor, dataSensor) : 
     refSensor = db.reference(topicSensor)
     refSensor.set(dataSensor)
 
-    # save firestore data sensor temp (TOPIC1) and humi (TOPIC2) only
-    if prefixSensor ==  smhome_constants.PATH_SENSOR_KEY and (sensorId.split("SENSOR")[1] == "1" or sensorId.split("SENSOR")[1] == "2") :
-        print("save sensor")
-        save_sensor_firestore(sensorId, nodeId, dataSensor)
+def control_coi_alert(nodeId,sensorId, dataSensor ) : 
+    if sensorId == smhome_constants.SR_SENSOR_ID or sensorId == smhome_constants.GAS_SENSOR_ID :
+            configThres = smhome_utils.get_config_node(nodeId, sensorId)
+            if configThres != None :
+                if configThres["active"] == True : 
+                    topicAlert = smhome_utils.build_topic_sensor_from_id(nodeId, smhome_constants.COI_DEVICE_TOPIC_ID)
+                    smhome_mqtt.publish(client, topicAlert, dataSensor)
+                    set_realtime_db(topicAlert, dataSensor)
 
-       
-    cofigThres = smhome_utils.get_config_node(nodeId, sensorId)
-    if cofigThres != None : 
-        action_send_notify(cofigThres, dataSensor, sensorId )
-       
+def on_message(client, userdata, msg):
+    try :
+        topicSensor = msg.topic
+        raw_data = msg.payload.decode("utf-8")
 
+        sensorSplit = topicSensor.split("/")
+        nodeId = sensorSplit[2]
+        sensorId = sensorSplit[3]
+        prefixSensor = sensorSplit[4]
 
+        dataSensor = smhome_utils.process_frame(raw_data, sensorId)
 
-    
-    # log
-    print(f"[SUB]:   Received `{dataSensor}` from `{topicSensor}` topic")
+        if not dataSensor :
+            return
+        
+        # replace topic button to status => ref status device
+        if prefixSensor == smhome_constants.PATH_BUTTON_KEY  :
+            topicSensor = topicSensor.replace(prefixSensor, "status")
+
+        # set realtime 
+        print(f"topicSensor : {topicSensor}")
+        set_realtime_db(topicSensor,dataSensor )
+
+        # save firestore data sensor temp (TOPIC1) and humi (TOPIC2) only
+        sensorSaveConditionTempHumi = (sensorId.split("SENSOR")[1] == "1" or sensorId.split("SENSOR")[1] == "2")
+        sensorSaveConditionGasHR = (sensorId.split("SENSOR")[1] == "3" or sensorId.split("SENSOR")[1] == "4") and str(dataSensor) == "1"
+
+        if prefixSensor ==  smhome_constants.PATH_SENSOR_KEY :
+            if sensorSaveConditionTempHumi or sensorSaveConditionGasHR:
+                save_sensor_db(sensorId, nodeId, dataSensor)
+                
+
+        # check coi
+        control_coi_alert(nodeId,sensorId,dataSensor)
+                    
+        
+    except Exception as e:
+        print(f">>>>>>>>>>>>>>>>: {e}")
+
 
 
 # subscrice topic  
@@ -219,8 +136,6 @@ def on_message_firebase(event):
     smhome_utils.save_config_node(event, ref)
 
     if event.path != path_all and  path_sensor == path_device_key:
-        print("---------------------------------------------------------------")
-        print('[{}] :: {}'.format(event.path, event.data))
 
         dataPub = event.data
         

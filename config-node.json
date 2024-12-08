@@ -56,32 +56,35 @@
                     "active": true,
                     "icon": "icon",
                     "isAlert": false,
-                    "maxThreshold": "40",
+                    "isAlertThreshold": true,
+                    "maxThreshold": "45",
                     "minThreshold": "25",
                     "name": "Nhi\u1ec7t \u0111\u1ed9",
                     "style": "bg-gradient-to-r from-yellow-500",
                     "unit": "\u00b0C"
                 },
-                "value": "31.35"
+                "value": "32.25"
             },
             "SMH_SENSOR2": {
                 "config": {
                     "active": true,
                     "icon": "carbon:humidity",
                     "isAlert": false,
-                    "maxThreshold": "50",
+                    "isAlertThreshold": true,
+                    "maxThreshold": "100",
                     "minThreshold": "30",
                     "name": "\u0110\u00f4 \u1ea9m",
                     "style": "bg-gradient-to-r from-yellow-500",
                     "unit": "%"
                 },
-                "value": "73.14"
+                "value": "61.79"
             },
             "SMH_SENSOR3": {
                 "config": {
                     "active": true,
                     "icon": "mdi:run-fast",
                     "isAlert": true,
+                    "isAlertThreshold": false,
                     "maxThreshold": "",
                     "minThreshold": "",
                     "name": "Chuy\u1ec3n \u0111\u1ed9ng",
@@ -95,9 +98,10 @@
                     "active": true,
                     "icon": "mdi:gas",
                     "isAlert": true,
+                    "isAlertThreshold": false,
                     "maxThreshold": "",
                     "minThreshold": "",
-                    "name": "Kh\u00ed Gas, Kh\u00f3i",
+                    "name": "Kh\u00ed Gas",
                     "style": "bg-gradient-to-r from-yellow-500",
                     "unit": ""
                 },
@@ -155,7 +159,8 @@
                         "active": true,
                         "icon": "carbon:humidity",
                         "isAlert": false,
-                        "maxThreshold": "50",
+                        "isAlertThreshold": true,
+                        "maxThreshold": "100",
                         "minThreshold": "30",
                         "name": "\u0110\u00f4 \u1ea9m",
                         "sensorId": "SMH_SENSOR2",
@@ -166,7 +171,8 @@
                         "active": true,
                         "icon": "",
                         "isAlert": false,
-                        "maxThreshold": "40",
+                        "isAlertThreshold": true,
+                        "maxThreshold": "45",
                         "minThreshold": "25",
                         "name": "Nhi\u1ec7t \u0111\u1ed9",
                         "sensorId": "SMH_SENSOR1",
@@ -177,9 +183,10 @@
                         "active": true,
                         "icon": "mdi:gas",
                         "isAlert": true,
+                        "isAlertThreshold": false,
                         "maxThreshold": "",
                         "minThreshold": "",
-                        "name": "Kh\u00ed Gas, Kh\u00f3i",
+                        "name": "Kh\u00ed Gas",
                         "sensorId": "SMH_SENSOR4",
                         "style": "bg-gradient-to-r from-yellow-500",
                         "unit": ""
@@ -188,6 +195,7 @@
                         "active": true,
                         "icon": "mdi:run-fast",
                         "isAlert": true,
+                        "isAlertThreshold": false,
                         "maxThreshold": "",
                         "minThreshold": "",
                         "name": "Chuy\u1ec3n \u0111\u1ed9ng",
@@ -321,6 +329,33 @@
                         "unit": "%"
                     }
                 ]
+            }
+        },
+        "SMH_NODE4": {
+            "SMH_DEVICE1": {
+                "config": {
+                    "active": true,
+                    "icon": "svg-spinners:wind-toy",
+                    "name": "\u0110en chum",
+                    "styleOFF": "bg-gradient-to-r from-red-500 to-red-400",
+                    "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                },
+                "status": 1
+            },
+            "config": {
+                "active": true,
+                "deviceItem": [
+                    {
+                        "active": true,
+                        "deviceId": "SMH_DEVICE1",
+                        "icon": "svg-spinners:wind-toy",
+                        "name": "\u0110en chum",
+                        "styleOFF": "bg-gradient-to-r from-red-500 to-red-400",
+                        "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
+                    }
+                ],
+                "name": "Nh\u00e0 v\u1ec7 sinh",
+                "nodeId": "SMH_NODE4"
             }
         }
     }

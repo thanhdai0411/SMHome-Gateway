@@ -31,6 +31,9 @@ def subscribe(client: mqtt_client, topic, on_message):
     client.subscribe(topic)
     client.on_message = on_message
 
+    
+
+
 
 def publish(client, topic,  msg):
     
@@ -50,7 +53,7 @@ def connect_mqtt():
     client.username_pw_set(username, password)
 
     client.on_connect = on_connect
-    
+
     client.connect(broker, port)
     return client
 

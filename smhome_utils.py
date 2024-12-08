@@ -1,6 +1,7 @@
 import json
-
+import os
 import smhome_constants 
+import time 
 
 def build_topic_sensor(nodeConfig ) :
         
@@ -15,6 +16,10 @@ def build_topic_sensor(nodeConfig ) :
         sensor_topic.append(topic)
     
     return sensor_topic
+
+
+def build_topic_sensor_from_id(nodeId, id) :
+    return f"/{smhome_constants.ROOT_SM_HOME}/{nodeId}/{id}/status"
     
 
 def build_topic_button(nodeConfig) :
@@ -60,9 +65,10 @@ def get_config_node(nodeId , sensorId) :
         return {
             "minThreshold" : getConfigSensor["minThreshold"],
             "maxThreshold" : getConfigSensor["maxThreshold"],
-            "name" : getConfigSensor["name"]
+            "name" : getConfigSensor["name"],
+            "active" : getConfigSensor["active"]
         }
-    return {}  
+    return None
 
 
 def load_notification_state():
@@ -77,12 +83,95 @@ def save_notification_state(state):
 
 
 def can_send_notification(sensorId, last_send_times):
-    
+   
     current_time = time.time()  
+    print(f"last_send_times: {last_send_times}")
+    if not last_send_times : 
+        last_send_times[sensorId] = current_time  
+        save_notification_state(last_send_times) 
+        return True
+
     last_time = float(last_send_times.get(sensorId, 0))  
+
+    print(f"last_time: {last_time}")
 
     if current_time - last_time >= smhome_constants.NOTIFICATION_NEXT_MINUTE_TIME: 
         last_send_times[sensorId] = current_time  
         save_notification_state(last_send_times) 
         return True
     return False
+   
+    
+
+
+
+# build frame
+
+def calculate_crc16(data: str) -> str:
+    """Tính CRC-16"""
+    crc = 0xFFFF
+    for byte in data.encode("utf-8"):
+        crc ^= byte
+        for _ in range(8):
+            if crc & 0x0001:
+                crc = (crc >> 1) ^ 0xA001
+            else:
+                crc >>= 1
+    return f"{crc:04X}"  # Trả về CRC dưới dạng chuỗi hex 4 ký tự
+
+def checkDeviceId(deviceId : str) :
+    check = {
+        smhome_constants.TEMP_DEVICE_ID : TEMP_SENSOR_ID,
+        smhome_constants.HUMI_DEVICE_ID : HUMI_SENSOR_ID,
+        smhome_constants.SR_DEVICE_ID : SR_SENSOR_ID,
+        smhome_constants.GAS_DEVICE_ID : GAS_SENSOR_ID,        
+    }
+
+        
+    try:
+        return check[deviceId]
+    except:
+        return None
+
+
+
+def process_frame(frame: str, sensorId : str):
+    """Phân tích và xử lý frame"""
+    
+    # <START,02,56.17,B3E0,END>
+    
+    # Kiểm tra ký hiệu START và END
+    if not frame.startswith("<START") or not frame.endswith("END>"):
+        print("Frame không hợp lệ! Thiếu ký hiệu START hoặc END.")
+        return
+
+
+    content = frame[7:-5]
+    # 02, 56.17 , B3E0
+
+    parts = content.split(",")
+
+    # [02 ; 56.17 ; B3E0]
+
+    if len(parts) != 3:
+        print("Frame không hợp lệ! Sai định dạng.")
+        return
+
+    # Phân tích các trường
+    device_id, sensor_data, crc_received = parts
+    
+
+    # check device id with topic 
+    # if not checkDeviceId(device_id):
+    #     print("Device Id invalid")
+    #     return 
+
+    # Kiểm tra CRC
+    calculated_crc = calculate_crc16(f"{device_id},{sensor_data}")
+
+    if calculated_crc != crc_received:
+        print(f"CRC không khớp! CRC nhận: {crc_received}, CRC tính: {calculated_crc}")
+        return
+
+
+    return sensor_data
