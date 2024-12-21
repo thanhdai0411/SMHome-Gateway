@@ -49,7 +49,7 @@
                     "styleOFF": "",
                     "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
                 },
-                "status": "0"
+                "status": 1
             },
             "SMH_SENSOR1": {
                 "config": {
@@ -83,15 +83,15 @@
                 "config": {
                     "active": true,
                     "icon": "mdi:run-fast",
-                    "isAlert": false,
-                    "isAlertThreshold": false,
+                    "isAlert": true,
+                    "isAlertThreshold": true,
                     "maxThreshold": "",
                     "minThreshold": "",
                     "name": "Chuy\u1ec3n \u0111\u1ed9ng",
                     "style": "bg-gradient-to-r from-yellow-500",
                     "unit": ""
                 },
-                "value": "1"
+                "value": "0"
             },
             "SMH_SENSOR4": {
                 "value": "1"
@@ -171,8 +171,8 @@
                     {
                         "active": true,
                         "icon": "mdi:run-fast",
-                        "isAlert": false,
-                        "isAlertThreshold": false,
+                        "isAlert": true,
+                        "isAlertThreshold": true,
                         "maxThreshold": "",
                         "minThreshold": "",
                         "name": "Chuy\u1ec3n \u0111\u1ed9ng",

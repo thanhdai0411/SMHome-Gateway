@@ -143,7 +143,13 @@ def checkDeviceId(deviceId : str) :
         smhome_constants.TEMP_DEVICE_ID : smhome_constants.TEMP_SENSOR_ID,
         smhome_constants.HUMI_DEVICE_ID : smhome_constants.HUMI_SENSOR_ID,
         smhome_constants.SR_DEVICE_ID : smhome_constants.SR_SENSOR_ID,
-        smhome_constants.GAS_DEVICE_ID : smhome_constants.GAS_SENSOR_ID,    
+        smhome_constants.GAS_DEVICE_ID : smhome_constants.GAS_SENSOR_ID,   
+        smhome_constants.RELAY1_DEVICE_ID : smhome_constants.RELAY1_TOPIC_ID,
+        smhome_constants.RELAY2_DEVICE_ID : smhome_constants.RELAY2_TOPIC_ID,
+        smhome_constants.RELAY3_DEVICE_ID : smhome_constants.RELAY3_TOPIC_ID,
+        smhome_constants.RELAY4_DEVICE_ID : smhome_constants.RELAY4_TOPIC_ID,
+        smhome_constants.RELAY5_DEVICE_ID : smhome_constants.RELAY5_TOPIC_ID,
+
     }
 
         
