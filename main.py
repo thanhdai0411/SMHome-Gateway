@@ -66,22 +66,48 @@ def control_coi_alert(nodeId,sensorId, dataSensor ) :
     if sensorId == smhome_constants.SR_SENSOR_ID or sensorId == smhome_constants.GAS_SENSOR_ID :
             configThres = smhome_utils.get_config_node(nodeId, sensorId)
             if configThres != None :
-                if configThres["active"] == True : 
+                if configThres["active"] == True and configThres["isAlert"] == True  : 
                     topicAlert = smhome_utils.build_topic_sensor_from_id(nodeId, smhome_constants.COI_DEVICE_TOPIC_ID)
                     smhome_mqtt.publish(client, topicAlert, dataSensor)
                     set_realtime_db(topicAlert, dataSensor)
 
+def init_device_start_node(nodeId) : 
+    prevDataNode = smhome_utils.get_prev_data_node(nodeId)
+    if prevDataNode != None : 
+        listDevice = smhome_constants.SM_HOME_LIST_DEVICE_ID
+        for s in listDevice:
+            deviceStatusPrev = prevDataNode[s]["status"]
+            topicDevice = f"/{smhome_constants.ROOT_SM_HOME}/{nodeId}/{s}/status"
+            smhome_mqtt.publish(client, topicDevice, deviceStatusPrev)
+
+
 def on_message(client, userdata, msg):
     try :
         topicSensor = msg.topic
+        print(f" :::topicSensor::: {topicSensor}")
+
         raw_data = msg.payload.decode("utf-8")
 
         sensorSplit = topicSensor.split("/")
         nodeId = sensorSplit[2]
+
+        dataSensor = smhome_utils.process_frame(raw_data)
+
+        # if smhome_utils.check_topic_start_node(nodeId, topicSensor) :
+        #     print(f"[{nodeId}]: :::init_device::: ")
+        #     init_device_start_node(nodeId)
+
         sensorId = sensorSplit[3]
         prefixSensor = sensorSplit[4]
 
-        dataSensor = smhome_utils.process_frame(raw_data, sensorId)
+        print(f"[{nodeId}]: {sensorId} :::raw_data::: {raw_data}")
+
+        
+
+       
+
+
+        print(f"[{nodeId}]: {sensorId} ::: {dataSensor}")
 
         if not dataSensor :
             return
@@ -119,6 +145,11 @@ for topicSensor in smhome_constants.SM_HOME_ALL_SENSOR_TOPIC :
 
 # device
 for topicDevice in smhome_constants.SM_HOME_ALL_BUTTON_TOPIC : 
+    smhome_mqtt.subscribe(client, topicDevice, on_message)
+
+
+# start
+for topicDevice in smhome_constants.SM_HOME_ALL_START_TOPIC : 
     smhome_mqtt.subscribe(client, topicDevice, on_message)
 
 

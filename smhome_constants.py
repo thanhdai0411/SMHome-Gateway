@@ -31,6 +31,7 @@ TEMP_DEVICE_ID = "01"
 HUMI_DEVICE_ID = "02"
 SR_DEVICE_ID = "03"
 GAS_DEVICE_ID = "04"
+NODE_START_ID = "99"
 
 #  Node 1
 SM_HOME_NODE_1 = {
@@ -52,8 +53,11 @@ SM_HOME_NODE_1 = {
   
 }
 
+SM_HOME_LIST_DEVICE_ID = ["SMH_DEVICE1", "SMH_DEVICE2", "SMH_DEVICE3", "SMH_DEVICE4", "SMH_DEVICE5"]
+
 SM_HOME_NODE_1_SENSOR_TOPIC = smhome_utils.build_topic_sensor(SM_HOME_NODE_1)
 SM_HOME_NODE_1_BUTTON_TOPIC = smhome_utils.build_topic_button(SM_HOME_NODE_1)
+SM_HOME_NODE_1_START_TOPIC = smhome_utils.build_topic_start_node(SM_HOME_NODE_1["id"])
 
 
 #  Node 2
@@ -77,7 +81,7 @@ SM_HOME_NODE_2 = {
 
 SM_HOME_NODE_2_SENSOR_TOPIC = smhome_utils.build_topic_sensor(SM_HOME_NODE_2)
 SM_HOME_NODE_2_BUTTON_TOPIC = smhome_utils.build_topic_button(SM_HOME_NODE_2)
-
+SM_HOME_NODE_2_START_TOPIC = smhome_utils.build_topic_start_node(SM_HOME_NODE_2["id"])
 
 
 #  Node 3
@@ -101,10 +105,13 @@ SM_HOME_NODE_3 = {
 
 SM_HOME_NODE_3_SENSOR_TOPIC = smhome_utils.build_topic_sensor(SM_HOME_NODE_3)
 SM_HOME_NODE_3_BUTTON_TOPIC = smhome_utils.build_topic_button(SM_HOME_NODE_3)
+SM_HOME_NODE_3_START_TOPIC = smhome_utils.build_topic_start_node(SM_HOME_NODE_3["id"])
+
 
 
 # all
 SM_HOME_ALL_SENSOR_TOPIC = SM_HOME_NODE_1_SENSOR_TOPIC + SM_HOME_NODE_2_SENSOR_TOPIC + SM_HOME_NODE_3_SENSOR_TOPIC
 SM_HOME_ALL_BUTTON_TOPIC = SM_HOME_NODE_1_BUTTON_TOPIC + SM_HOME_NODE_2_BUTTON_TOPIC + SM_HOME_NODE_3_BUTTON_TOPIC
+SM_HOME_ALL_START_TOPIC = [SM_HOME_NODE_1_START_TOPIC, SM_HOME_NODE_2_START_TOPIC, SM_HOME_NODE_3_START_TOPIC]
 
 

@@ -20,7 +20,14 @@ def build_topic_sensor(nodeConfig ) :
 
 def build_topic_sensor_from_id(nodeId, id) :
     return f"/{smhome_constants.ROOT_SM_HOME}/{nodeId}/{id}/status"
-    
+
+def build_topic_start_node(nodeId) :
+    return f"/{smhome_constants.ROOT_SM_HOME}/{nodeId}/start"
+
+def check_topic_start_node(nodeId, topic) :
+    topicReal = build_topic_start_node(nodeId)
+    return topicReal == topic
+
 
 def build_topic_button(nodeConfig) :
         
@@ -66,8 +73,20 @@ def get_config_node(nodeId , sensorId) :
             "minThreshold" : getConfigSensor["minThreshold"],
             "maxThreshold" : getConfigSensor["maxThreshold"],
             "name" : getConfigSensor["name"],
-            "active" : getConfigSensor["active"]
+            "active" : getConfigSensor["active"],
+            "isAlert" : getConfigSensor["isAlert"]
         }
+    return None
+
+
+def get_prev_data_node(nodeId) : 
+    if os.path.exists(smhome_constants.NODE_CONFIG_FILE):
+        with open(smhome_constants.NODE_CONFIG_FILE, 'r') as openfile:
+            json_object = json.load(openfile)
+    
+        direction = smhome_constants.ROOT_SM_HOME
+        getConfigSensor = json_object[smhome_constants.ROOT_SM_HOME][nodeId]
+        return getConfigSensor
     return None
 
 
@@ -121,10 +140,10 @@ def calculate_crc16(data: str) -> str:
 
 def checkDeviceId(deviceId : str) :
     check = {
-        smhome_constants.TEMP_DEVICE_ID : TEMP_SENSOR_ID,
-        smhome_constants.HUMI_DEVICE_ID : HUMI_SENSOR_ID,
-        smhome_constants.SR_DEVICE_ID : SR_SENSOR_ID,
-        smhome_constants.GAS_DEVICE_ID : GAS_SENSOR_ID,        
+        smhome_constants.TEMP_DEVICE_ID : smhome_constants.TEMP_SENSOR_ID,
+        smhome_constants.HUMI_DEVICE_ID : smhome_constants.HUMI_SENSOR_ID,
+        smhome_constants.SR_DEVICE_ID : smhome_constants.SR_SENSOR_ID,
+        smhome_constants.GAS_DEVICE_ID : smhome_constants.GAS_SENSOR_ID,    
     }
 
         
@@ -135,7 +154,7 @@ def checkDeviceId(deviceId : str) :
 
 
 
-def process_frame(frame: str, sensorId : str):
+def process_frame(frame: str):
     """Phân tích và xử lý frame"""
     
     # <START,02,56.17,B3E0,END>
@@ -162,9 +181,9 @@ def process_frame(frame: str, sensorId : str):
     
 
     # check device id with topic 
-    # if not checkDeviceId(device_id):
-    #     print("Device Id invalid")
-    #     return 
+    if not checkDeviceId(device_id):
+        print("Device Id invalid")
+        return 
 
     # Kiểm tra CRC
     calculated_crc = calculate_crc16(f"{device_id},{sensor_data}")
