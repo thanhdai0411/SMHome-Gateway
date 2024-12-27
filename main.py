@@ -5,7 +5,7 @@ from firebase_admin import firestore
 from firebase_admin import messaging
 import time
 from datetime import datetime
-import ngrok
+# import ngrok
 
 from google.cloud.firestore_v1 import SERVER_TIMESTAMP
 
