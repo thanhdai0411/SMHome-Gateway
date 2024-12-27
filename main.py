@@ -5,6 +5,7 @@ from firebase_admin import firestore
 from firebase_admin import messaging
 import time
 from datetime import datetime
+import ngrok
 
 from google.cloud.firestore_v1 import SERVER_TIMESTAMP
 
@@ -13,12 +14,27 @@ import smhome_mqtt
 import smhome_constants
 import smhome_utils
 
+import socket
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.8.8", 80))
+server_ip = s.getsockname()[0]
+
+
+print('>>> URL Server: {}'.format(server_ip))
+
+
 # connect mongodb atlas
 atlas_client = AtlasClient(ATLAS_URI, DB_NAME,COLLECTION_NAME)
 atlas_client.ping()
 
 
 cred = credentials.Certificate("sm-home-firebase-sdk.json")
+# ngrok.set_auth_token(smhome_constants.NGROK_AUTH)
+# listener = ngrok.forward(smhome_constants.SERVER_CAMERA_PORT, authtoken_from_env=True, request_header_add=["ngrok-skip-browser-warning:1"],
+    # request_header_remove="referrer")
+# camera_url = listener.url()
+# print(f"Server camera url {camera_url}")
 
 firebase_admin.initialize_app(cred, {
     'databaseURL': smhome_constants.DATABASE_URL
@@ -63,7 +79,7 @@ def set_realtime_db(topicSensor, dataSensor) :
     refSensor.set(dataSensor)
 
 def control_coi_alert(nodeId,sensorId, dataSensor ) : 
-    if sensorId == smhome_constants.SR_SENSOR_ID or sensorId == smhome_constants.GAS_SENSOR_ID :
+    if sensorId == smhome_constants.SR_SENSOR_ID or sensorId == smhome_constants.GAS_SENSOR_ID  or sensorId == smhome_constants.KHOI_SENSOR_ID :
             configThres = smhome_utils.get_config_node(nodeId, sensorId)
             if configThres != None :
                 if configThres["active"] == True and configThres["isAlert"] == True  : 
@@ -175,8 +191,7 @@ def on_message_firebase(event):
             topicPub = event.path
             smhome_mqtt.publish(client, topicPub, dataPub)
 
-
-
+set_realtime_db(smhome_constants.NODE_URL_SUPPORT_CAMERA, f'http://{server_ip}:5000')
 my_stream = ref.listen(on_message_firebase)
 
 
