@@ -9,7 +9,7 @@
                     "styleOFF": "",
                     "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
                 },
-                "status": 1
+                "status": "1"
             },
             "SMH_DEVICE2": {
                 "config": {
@@ -19,7 +19,7 @@
                     "styleOFF": "",
                     "styleON": "bg-gradient-to-r from-cyan-500 to-green-400"
                 },
-                "status": 1
+                "status": "1"
             },
             "SMH_DEVICE3": {
                 "config": {
@@ -63,7 +63,7 @@
                     "style": "bg-gradient-to-r from-yellow-500",
                     "unit": "\u00b0C"
                 },
-                "value": "30.99"
+                "value": "29.18"
             },
             "SMH_SENSOR2": {
                 "config": {
@@ -77,7 +77,7 @@
                     "style": "bg-gradient-to-r from-yellow-500",
                     "unit": "%"
                 },
-                "value": "63.12"
+                "value": "75.48"
             },
             "SMH_SENSOR3": {
                 "config": {
@@ -247,7 +247,7 @@
                     "style": "bg-gradient-to-r from-yellow-500",
                     "unit": "\u00b0C"
                 },
-                "value": "31.91"
+                "value": "30.06"
             },
             "SMH_SENSOR2": {
                 "config": {
@@ -261,13 +261,26 @@
                     "style": "bg-gradient-to-r from-yellow-500",
                     "unit": "%"
                 },
-                "value": "57.25"
+                "value": "73.28"
             },
             "SMH_SENSOR3": {
                 "value": "1"
             },
             "SMH_SENSOR4": {
                 "value": "0"
+            },
+            "SMH_SENSOR5": {
+                "config": {
+                    "active": true,
+                    "icon": "icon",
+                    "isAlert": true,
+                    "isAlertThreshold": true,
+                    "maxThreshold": "",
+                    "minThreshold": "",
+                    "name": "Smoke",
+                    "style": "bg-gradient-to-r from-yellow-500",
+                    "unit": ""
+                }
             },
             "SM_SENSOR1": {
                 "config": {
@@ -282,6 +295,7 @@
             },
             "config": {
                 "active": true,
+                "cameraUrl": "",
                 "deviceItem": [
                     {
                         "active": true,
@@ -350,6 +364,18 @@
                         "sensorId": "SMH_SENSOR2",
                         "style": "bg-gradient-to-r from-yellow-500",
                         "unit": "%"
+                    },
+                    {
+                        "active": true,
+                        "icon": "",
+                        "isAlert": true,
+                        "isAlertThreshold": true,
+                        "maxThreshold": "",
+                        "minThreshold": "",
+                        "name": "Smoke",
+                        "sensorId": "SMH_SENSOR5",
+                        "style": "bg-gradient-to-r from-yellow-500",
+                        "unit": ""
                     }
                 ]
             }

@@ -41,7 +41,7 @@ TEMP_DEVICE_ID = "01"
 HUMI_DEVICE_ID = "02"
 SR_DEVICE_ID = "03"
 GAS_DEVICE_ID = "04"
-KHOI_DEVICE_ID = "05 "
+KHOI_DEVICE_ID = "05"
 
 RELAY1_DEVICE_ID = "06"
 RELAY2_DEVICE_ID = "07"
@@ -92,7 +92,8 @@ SM_HOME_NODE_2 = {
         "1" : "SMH_SENSOR1",
         "2" : "SMH_SENSOR2",
         "3" : "SMH_SENSOR3",
-        "4" : "SMH_SENSOR4"
+        "4" : "SMH_SENSOR4",
+        "5" : "SMH_SENSOR5"
     },
   
 }
@@ -116,7 +117,8 @@ SM_HOME_NODE_3 = {
         "1" : "SMH_SENSOR1",
         "2" : "SMH_SENSOR2",
         "3" : "SMH_SENSOR3",
-        "4" : "SMH_SENSOR4"
+        "4" : "SMH_SENSOR4",
+        "5" : "SMH_SENSOR5",
     },
   
 }
