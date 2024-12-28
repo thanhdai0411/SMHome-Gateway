@@ -5,7 +5,7 @@ from firebase_admin import firestore
 from firebase_admin import messaging
 import time
 from datetime import datetime
-import ngrok
+# import ngrok
 
 from google.cloud.firestore_v1 import SERVER_TIMESTAMP
 
@@ -30,11 +30,11 @@ atlas_client.ping()
 
 
 cred = credentials.Certificate("sm-home-firebase-sdk.json")
-ngrok.set_auth_token(smhome_constants.NGROK_AUTH)
-listener = ngrok.forward(smhome_constants.SERVER_CAMERA_PORT, authtoken_from_env=True, request_header_add=["ngrok-skip-browser-warning:1"],
-    request_header_remove="referrer")
-camera_url = listener.url()
-print(f"Server camera url {camera_url}")
+# ngrok.set_auth_token(smhome_constants.NGROK_AUTH)
+# listener = ngrok.forward(smhome_constants.SERVER_CAMERA_PORT, authtoken_from_env=True, request_header_add=["ngrok-skip-browser-warning:1"],
+#     request_header_remove="referrer")
+# camera_url = listener.url()
+# print(f"Server camera url {camera_url}")
 
 firebase_admin.initialize_app(cred, {
     'databaseURL': smhome_constants.DATABASE_URL
@@ -191,8 +191,8 @@ def on_message_firebase(event):
             topicPub = event.path
             smhome_mqtt.publish(client, topicPub, dataPub)
 
-# set_realtime_db(smhome_constants.NODE_URL_SUPPORT_CAMERA, f'http://{server_ip}:5000')
-set_realtime_db(smhome_constants.NODE_URL_SUPPORT_CAMERA, camera_url)
+set_realtime_db(smhome_constants.NODE_URL_SUPPORT_CAMERA, f'http://{server_ip}:5000')
+# set_realtime_db(smhome_constants.NODE_URL_SUPPORT_CAMERA, camera_url)
 my_stream = ref.listen(on_message_firebase)
 
 
